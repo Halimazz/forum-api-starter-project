@@ -1,4 +1,4 @@
-import AddedThread from '../AddedThread';
+import AddedThread from '../AddedThread.js';
 describe('a AddedThread entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange

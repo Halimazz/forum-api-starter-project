@@ -1,4 +1,4 @@
-import ThreadDetails from '../ThreadDetails';
+import ThreadDetails from '../ThreadDetails.js';
 
 describe('a ThreadDetails entities', () => {
   it('should throw error when payload did not contain needed property', () => {

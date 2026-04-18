@@ -1,4 +1,4 @@
-import ReplyDetails from '../ReplyDetails';
+import ReplyDetails from '../ReplyDetails.js';
 
 describe('a ReplyDetails entities', () => {
   it('should throw error when payload did not contain needed property', () => {

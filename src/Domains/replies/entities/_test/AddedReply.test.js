@@ -1,4 +1,4 @@
-import AddedReply from '../AddedReply';
+import AddedReply from '../AddedReply.js';
 describe('a AddedReply entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange

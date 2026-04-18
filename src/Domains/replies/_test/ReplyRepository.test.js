@@ -1,4 +1,4 @@
-import ReplyRepository from '../ReplyRepository';
+import ReplyRepository from '../ReplyRepository.js';
 
 describe('ThreadRepository interface', () => {
   it('should throw error when invoke abstract behavior', async () => {

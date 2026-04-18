@@ -1,4 +1,4 @@
-import CommentRepository from "../CommentRepository";
+import CommentRepository from "../CommentRepository.js";
 
 describe('CommentRepository interface', () => {
   it('should throw error when invoke abstract behavior', async () => {

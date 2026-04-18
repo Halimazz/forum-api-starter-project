@@ -1,4 +1,4 @@
-import CommentDetails from '../CommentDetails';
+import CommentDetails from '../CommentDetails.js';
 
 describe('a CommentDetails entities', () => {
   it('should throw error when payload did not contain needed property', () => {
