@@ -54,4 +54,4 @@ class CommentsHandler {
   }
 }
 
-module.exports = CommentsHandler;
+export default CommentsHandler;
