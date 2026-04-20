@@ -3,6 +3,7 @@ import ClientError from '../../Commons/exceptions/ClientError.js';
 import DomainErrorTranslator from '../../Commons/exceptions/DomainErrorTranslator.js';
 import users from '../../Interfaces/http/api/users/index.js';
 import authentications from '../../Interfaces/http/api/authentications/index.js';
+import comments from '../../Interfaces/http/api/comments/index.js';
 
 const createServer = async (container) => {
   const app = express();
@@ -12,6 +13,7 @@ const createServer = async (container) => {
 
   // Register routes
   app.use('/users', users(container));
+  app.use('/comments', comments(container));  
   app.use('/authentications', authentications(container));
 
   // Global error handler
