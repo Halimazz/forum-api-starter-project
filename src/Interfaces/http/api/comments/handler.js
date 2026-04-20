@@ -9,48 +9,40 @@ class CommentsHandler {
     this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
   }
 
-  async postCommentHandler(request, h) {
-    const { threadId } = request.params;
-    const { content } = request.payload;
-    const { id: owner } = request.auth.credentials;
+  async postCommentHandler(req, res) {
+    const { threadId } = req.params;
+    const { content } = req.body;
+    const { id: owner } = req.user;
 
-    const addCommentUseCase = this._container.getInstance(
-      AddCommentUseCase.name,
-    );
+    const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
     const addedComment = await addCommentUseCase.execute({
       threadId,
       content,
       owner,
     });
 
-    const response = h.response({
+    return res.status(201).json({
       status: 'success',
       data: {
         addedComment,
       },
     });
-    response.code(201);
-    return response;
   }
 
-  async deleteCommentHandler(request, h) {
-    const { commentId, threadId } = request.params;
-    const { id: userId } = request.auth.credentials;
+  async deleteCommentHandler(req, res) {
+    const { commentId, threadId } = req.params;
+    const { id: userId } = req.user;
 
-    const deleteCommentUseCase = this._container.getInstance(
-      DeleteCommentUseCase.name,
-    );
+    const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
     await deleteCommentUseCase.execute({
       commentId,
       threadId,
       userId,
     });
 
-    const response = h.response({
+    return res.status(200).json({
       status: 'success',
     });
-    response.code(200);
-    return response;
   }
 }
 

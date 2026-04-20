@@ -1,12 +1,12 @@
 import CommentsHandler from './handler.js';
-import routes from './routes.js';
+import createCommentsRouter from './routes.js';
 import express from 'express';
 
 const router = express.Router();
 
 const commentsPlugin = (container) => {
   const commentsHandler = new CommentsHandler(container);
-  routes(router, commentsHandler);
+  createCommentsRouter(router, commentsHandler);
   return router;
 };
 

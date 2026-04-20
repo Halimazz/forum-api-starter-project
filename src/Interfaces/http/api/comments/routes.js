@@ -1,20 +1,13 @@
-const routes = (handler) => [
-  {
-    method: 'POST',
-    path: '/threads/:threadId/comments',
-    handler: handler.postCommentHandler,
-    options: {
-      auth: 'forum_api_jwt',
-    },
-  },
-  {
-    method: 'DELETE',
-    path: '/threads/:threadId/comments/:commentId',
-    handler: handler.deleteCommentHandler,
-    options: {
-      auth: 'forum_api_jwt',
-    },
-  },
-];
+import express from 'express';
+import authMiddleware from '../../../../Commons/middleware/authMiddleware.js';
 
-export default routes;
+const createCommentsRouter = (handler) => {
+  const router = express.Router();
+
+  router.post('/threads/:threadId/comments', authMiddleware, handler.postCommentHandler);
+  router.delete('/threads/:threadId/comments/:commentId', authMiddleware, handler.deleteCommentHandler);
+
+  return router;
+};
+
+export default createCommentsRouter;
