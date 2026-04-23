@@ -1,51 +1,142 @@
-import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
+import pool from '../../database/postgres/pool.js';
+
+import ThreadRepositoryPostgres from '../ThreadRepositoryPostgres.js';
+
+import UsersTableTestHelper from '../../../../tests/UsersTableTestHelper.js';
+import ThreadsTableTestHelper from '../../../../tests/ThreadsTableTestHelper.js';
 
 import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
 
-class ThreadRepositoryPostgres extends ThreadRepository {
-  constructor(pool, idGenerator) {
-    super();
-    this._pool = pool;
-    this._idGenerator = idGenerator;
-  }
+describe('ThreadRepositoryPostgres', () => {
+  beforeEach(async () => {
+    await UsersTableTestHelper.addUser({
+      id: 'user-123',
+      username: 'dicoding',
+      password: 'secret',
+      fullname: 'Dicoding Indonesia',
+    });
+  });
 
-  async addThread(newThread) {
-    const { title, body, owner } = newThread;
-    const id = `thread-${this._idGenerator()}`;
+  afterEach(async () => {
+    await ThreadsTableTestHelper.cleanTable();
+    await UsersTableTestHelper.cleanTable();
+  });
 
-    const query = {
-      text: 'INSERT INTO threads (id, title, body, owner) VALUES($1, $2, $3, $4) RETURNING id, title, owner',
-      values: [id, title, body, owner],
-    };
+  afterAll(async () => {
+    await pool.end();
+  });
 
-    const result = await this._pool.query(query);
+  describe('addThread function', () => {
+    it('should persist new thread and return added thread correctly', async () => {
+      // Arrange
+      const newThread = {
+        title: 'judul thread',
+        body: 'isi thread',
+        owner: 'user-123',
+      };
 
-    return result.rows[0];
-  }
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
-  async verifyThreadExist(threadId) {
-    const query = {
-      text: 'SELECT 1 FROM threads WHERE id = $1',
-      values: [threadId],
-    };
+      // Action
+      await threadRepositoryPostgres.addThread(newThread);
 
-    const result = await this._pool.query(query);
+      // Assert
+      const threads = await ThreadsTableTestHelper.findThreadById('thread-123');
+      expect(threads).toHaveLength(1);
+    });
 
-    if (!result.rowCount) {
-      throw new NotFoundError('Thread tidak ditemukan');
-    }
-  }
+    it('should return added thread correctly', async () => {
+      // Arrange
+      const newThread = {
+        title: 'judul thread',
+        body: 'isi thread',
+        owner: 'user-123',
+      };
 
-  async getThreadById(threadId) {
-    const query = {
-      text: 'SELECT threads.id, threads.title, threads.body, threads.date, users.username FROM threads JOIN users ON threads.owner = users.id WHERE threads.id = $1',
-      values: [threadId],
-    };
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
-    const result = await this._pool.query(query);
+      // Action
+      const addedThread = await threadRepositoryPostgres.addThread(newThread);
 
-    return result.rows[0];
-  }
-}
+      // Assert
+      expect(addedThread).toStrictEqual({
+        id: 'thread-123',
+        title: 'judul thread',
+        owner: 'user-123',
+      });
+    });
+  });
 
-export default ThreadRepositoryPostgres;
+  describe('verifyThreadExist function', () => {
+    it('should throw NotFoundError when thread is not exist', async () => {
+      // Arrange
+      const threadId = 'must be not found';
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action & Assert
+      await expect(
+        threadRepositoryPostgres.verifyThreadExist(threadId),
+      ).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when thread is exist', async () => {
+      // Arrange
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'judul thread',
+        body: 'isi thread',
+        owner: 'user-123',
+      });
+
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action & Assert
+      await expect(
+        threadRepositoryPostgres.verifyThreadExist('thread-123'),
+      ).resolves.not.toThrowError(NotFoundError);
+    });
+  });
+
+  describe('getThreadById function', () => {
+    it('should return thread correctly', async () => {
+      // Arrange
+      const threadDate = new Date();
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'judul thread',
+        body: 'isi thread',
+        owner: 'user-123',
+        date: threadDate,
+      });
+
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      const thread = await threadRepositoryPostgres.getThreadById('thread-123');
+
+      // Assert
+      expect(thread).toHaveProperty('id', 'thread-123');
+      expect(thread).toHaveProperty('title', 'judul thread');
+      expect(thread).toHaveProperty('body', 'isi thread');
+      expect(thread).toHaveProperty('username', 'dicoding');
+      expect(thread).toHaveProperty('date', threadDate);
+    });
+
+    it('should return undefined when thread is not exist', async () => {
+      // Arrange
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      const thread = await threadRepositoryPostgres.getThreadById('must be not found');
+
+      // Assert
+      expect(thread).toBeUndefined();
+    });
+  });
+});
