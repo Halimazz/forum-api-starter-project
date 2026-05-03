@@ -3,6 +3,7 @@ import AddedComment from '../../../Domains/comments/entities/AddedComment.js';
 import CommentRepository from '../../../Domains/comments/CommentRepository.js';
 import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
 import AddCommentUseCase from '../AddCommentUseCase.js';
+import { vi } from 'vitest';
 
 describe('AddCommentUseCase', () => {
   /**
@@ -27,10 +28,10 @@ describe('AddCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
-    mockThreadRepository.verifyThreadExist = jest
+    mockThreadRepository.verifyThreadExist = vi
       .fn(() => Promise.resolve());
 
-    mockCommentRepository.addComment = jest
+    mockCommentRepository.addComment = vi
       .fn(() => Promise.resolve({
         id: 'comment-123',
         content: useCasePayload.content,

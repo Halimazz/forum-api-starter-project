@@ -2,6 +2,8 @@ import NewThread from '../../../Domains/threads/entities/NewThread.js';
 import AddedThread from '../../../Domains/threads/entities/AddedThread.js';
 import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
 import AddThreadUseCase from '../AddThreadUseCase.js';
+import { vi } from 'vitest';
+
 
 describe('AddThreadUseCase', () => {
   /**
@@ -25,7 +27,7 @@ describe('AddThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
-    mockThreadRepository.addThread = jest
+    mockThreadRepository.addThread = vi
       .fn(() => Promise.resolve({
         id: 'thread-123',
         title: useCasePayload.title,

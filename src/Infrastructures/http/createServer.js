@@ -15,13 +15,14 @@ const createServer = async (container) => {
 
   // Register routes
   app.use('/users', users(container));
-  app.use('/comments', comments(container));  
-  app.use('/replies', replies(container));
+  app.use('/', comments(container));  
+  app.use('/', replies(container));
   app.use('/threads', threads(container));
   app.use('/authentications', authentications(container));
 
   // Global error handler
   app.use((error, req, res, next) => {
+    console.log(error);
     // bila response tersebut error, tangani sesuai kebutuhan
     const translatedError = DomainErrorTranslator.translate(error);
 

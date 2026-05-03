@@ -1,5 +1,5 @@
 import ThreadRepository from '../../Domains/threads/ThreadRepository.js';
-import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
+import NotFoundError from '../../Commons/exceptions/NotFoundError.js';
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {

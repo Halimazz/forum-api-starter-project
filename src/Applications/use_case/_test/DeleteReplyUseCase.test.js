@@ -2,6 +2,7 @@ import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
 import CommentRepository from '../../../Domains/comments/CommentRepository.js';
 import ReplyRepository from '../../../Domains/replies/ReplyRepository.js';
 import DeleteReplyUseCase from '../DeleteReplyUseCase.js';
+import { vi } from 'vitest';
 
 describe('DeleteReplyUseCase', () => {
   /**
@@ -22,19 +23,19 @@ describe('DeleteReplyUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
-    mockThreadRepository.verifyThreadExist = jest
+    mockThreadRepository.verifyThreadExist = vi
       .fn(() => Promise.resolve());
 
-    mockCommentRepository.verifyCommentExist = jest
+    mockCommentRepository.verifyCommentExist = vi
       .fn(() => Promise.resolve());
 
-    mockReplyRepository.verifyReplyExist = jest
+    mockReplyRepository.verifyReplyExist = vi
       .fn(() => Promise.resolve());
 
-    mockReplyRepository.verifyReplyOwner = jest
+    mockReplyRepository.verifyReplyOwner = vi
       .fn(() => Promise.resolve());
 
-    mockReplyRepository.deleteReplyById = jest
+    mockReplyRepository.deleteReplyById = vi
       .fn(() => Promise.resolve());
 
     /** creating use case instance */

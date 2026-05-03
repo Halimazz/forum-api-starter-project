@@ -4,6 +4,8 @@ import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
 import CommentRepository from '../../../Domains/comments/CommentRepository.js';
 import ReplyRepository from '../../../Domains/replies/ReplyRepository.js';
 import AddReplyUseCase from '../AddReplyUseCase.js';
+import { vi } from 'vitest';
+
 
 describe('AddReplyUseCase', () => {
   /**
@@ -30,13 +32,13 @@ describe('AddReplyUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
-    mockThreadRepository.verifyThreadExist = jest
+    mockThreadRepository.verifyThreadExist = vi
       .fn(() => Promise.resolve());
 
-    mockCommentRepository.verifyCommentExist = jest
+    mockCommentRepository.verifyCommentExist = vi
       .fn(() => Promise.resolve());
 
-    mockReplyRepository.addReply = jest
+    mockReplyRepository.addReply = vi
       .fn(() => Promise.resolve({
         id: 'comment-123',
         content: useCasePayload.content,

@@ -1,6 +1,6 @@
-const NewComment = require('../../Domains/comments/entities/NewComment');
+
 import NewComment from '../../Domains/comments/entities/NewComment.js';
-const AddedComment = require('../../Domains/comments/entities/AddedComment');
+import AddedComment from '../../Domains/comments/entities/AddedComment.js';
 
 class AddCommentUseCase {
   constructor({ commentRepository, threadRepository }) {

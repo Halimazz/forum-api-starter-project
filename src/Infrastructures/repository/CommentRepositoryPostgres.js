@@ -1,4 +1,4 @@
-import CommentRepositoryPostgres from '../../Domains/comments/CommentRepository.js';
+import CommentRepository from '../../Domains/comments/CommentRepository.js';
 //import errors
 import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
 import AuthorizationError from '../../../Commons/exceptions/AuthorizationError.js';

@@ -1,5 +1,5 @@
 import NewThread from '../../Domains/threads/entities/NewThread.js';
-import AddedThread from '../../Domains/threads/entities/Thread.js';
+import AddedThread from '../../Domains/threads/entities/AddedThread.js';
 
 class AddThreadUseCase {
   constructor({ threadRepository }) {

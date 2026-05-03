@@ -1,4 +1,4 @@
-import AddCommentUseCase from '../../../../Applications/use_case/AddUserUseCase.js';
+import AddCommentUseCase from '../../../../Applications/use_case/AddCommentUseCase.js';
 import DeleteCommentUseCase from '../../../../Applications/use_case/DeleteCommentUseCase.js';
 
 class CommentsHandler {

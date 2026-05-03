@@ -5,6 +5,7 @@ import GetThreadUseCase from '../GetThreadUseCase.js';
 import ThreadDetails from '../../../Domains/threads/entities/ThreadDetails.js';
 import CommentDetails from '../../../Domains/comments/entities/CommentDetails.js';
 import ReplyDetails from '../../../Domains/replies/entities/ReplyDetails.js';
+import { vi } from 'vitest';
 
 describe('GetThreadUseCase', () => {
   /**
@@ -20,10 +21,10 @@ describe('GetThreadUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
-    mockThreadRepository.verifyThreadExist = jest
+    mockThreadRepository.verifyThreadExist = vi
       .fn(() => Promise.resolve());
 
-    mockThreadRepository.getThreadById = jest
+    mockThreadRepository.getThreadById = vi
       .fn(() => Promise.resolve({
         id: 'thread-123',
         title: 'sebuah thread',
@@ -32,7 +33,7 @@ describe('GetThreadUseCase', () => {
         username: 'dicoding',
       }));
 
-    mockCommentRepository.getCommentsByThreadId = jest
+    mockCommentRepository.getCommentsByThreadId = vi
       .fn(() => Promise.resolve([
         {
           id: 'comment-123',
@@ -50,7 +51,7 @@ describe('GetThreadUseCase', () => {
         },
       ]));
 
-    mockReplyRepository.getRepliesByCommentId = jest
+    mockReplyRepository.getRepliesByCommentId = vi
       .fn((commentId) => {
         if (commentId === 'comment-123') {
           return Promise.resolve([
