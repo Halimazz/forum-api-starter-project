@@ -14,19 +14,17 @@ const createServer = async (container) => {
   app.use(express.json());
 
   // Register routes
-  app.use('/users', users(container));
-  app.use('/', comments(container));  
+  app.use('/', users(container));
+  app.use('/', comments(container));
   app.use('/', replies(container));
-  app.use('/threads', threads(container));
-  app.use('/authentications', authentications(container));
+  app.use('/', threads(container));
+  app.use('/', authentications(container));
 
   // Global error handler
   app.use((error, req, res, next) => {
     console.log(error);
-    // bila response tersebut error, tangani sesuai kebutuhan
     const translatedError = DomainErrorTranslator.translate(error);
 
-    // penanganan client error secara internal.
     if (translatedError instanceof ClientError) {
       return res.status(translatedError.statusCode).json({
         status: 'fail',
@@ -34,7 +32,6 @@ const createServer = async (container) => {
       });
     }
 
-    // penanganan server error sesuai kebutuhan
     return res.status(500).json({
       status: 'error',
       message: 'terjadi kegagalan pada server kami',

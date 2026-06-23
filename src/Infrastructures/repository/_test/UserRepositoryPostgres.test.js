@@ -6,6 +6,10 @@ import pool from '../../database/postgres/pool.js';
 import UserRepositoryPostgres from '../UserRepositoryPostgres.js';
 
 describe('UserRepositoryPostgres', () => {
+  beforeEach(async () => {
+    await UsersTableTestHelper.cleanTable();
+  });
+
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
   });
@@ -16,13 +20,13 @@ describe('UserRepositoryPostgres', () => {
 
   describe('verifyAvailableUsername function', () => {
     it('should throw InvariantError when username not available', async () => {
-    // Arrange
-    await UsersTableTestHelper.addUser({ id: 'user-111', username: 'dicoding' }); // ✅ kasih id unik
-    const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-111', username: 'dicoding' });
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
-    // Action & Assert
-    await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrowError(InvariantError);
-  });
+      // Action & Assert
+      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrowError(InvariantError);
+    });
 
     it('should not throw InvariantError when username available', async () => {
       // Arrange
@@ -41,7 +45,7 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret_password',
         fullname: 'Dicoding Indonesia',
       });
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -59,7 +63,7 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret_password',
         fullname: 'Dicoding Indonesia',
       });
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
