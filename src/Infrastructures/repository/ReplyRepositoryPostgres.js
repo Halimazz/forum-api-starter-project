@@ -1,6 +1,6 @@
 import ReplyRepository from '../../Domains/replies/ReplyRepository.js';
-import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
-import AuthorizationError from '../../../Commons/exceptions/AuthorizationError.js';
+import NotFoundError from '../../Commons/exceptions/NotFoundError.js';
+import AuthorizationError from '../../Commons/exceptions/AuthorizationError.js';
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {

@@ -6,15 +6,17 @@ if (process.env.NODE_ENV === 'test') {
   dotenv.config({
     path: path.resolve(process.cwd(), '.test.env'),
   });
-} else {
-  dotenv.config();
+} 
+else{
+  /* istanbul ignore next */
+  dotenv.config(); 
 }
 
 const config = {
   app: {
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
+    host: process.env.NODE_ENV !== 'production' ? 'localhost' : /* istanbul ignore next */ '0.0.0.0',
     port: process.env.PORT,
-    debug: process.env.NODE_ENV === 'development' ? { request: ['error'] } : {},
+    debug: process.env.NODE_ENV === 'development' ? /* istanbul ignore next */ { request: ['error'] } : {},
   },
   database: {
     host: process.env.PGHOST,

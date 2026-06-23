@@ -14,11 +14,11 @@ const createServer = async (container) => {
   app.use(express.json());
 
   // Register routes
-  app.use('/', users(container));
+  app.use('/users', users(container));
+  app.use('/authentications', authentications(container));
+  app.use('/threads', threads(container));
   app.use('/', comments(container));
   app.use('/', replies(container));
-  app.use('/', threads(container));
-  app.use('/', authentications(container));
 
   // Global error handler
   app.use((error, req, res, next) => {

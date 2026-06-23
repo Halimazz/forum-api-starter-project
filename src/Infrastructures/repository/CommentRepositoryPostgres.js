@@ -1,7 +1,7 @@
 import CommentRepository from '../../Domains/comments/CommentRepository.js';
 //import errors
-import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
-import AuthorizationError from '../../../Commons/exceptions/AuthorizationError.js';
+import NotFoundError from '../../Commons/exceptions/NotFoundError.js';
+import AuthorizationError from '../../Commons/exceptions/AuthorizationError.js';
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
