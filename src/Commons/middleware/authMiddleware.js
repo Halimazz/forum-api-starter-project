@@ -6,7 +6,7 @@ const authMiddleware = (req, res, next) => {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
       status: 'fail',
-      message: 'Missing or invalid token',
+      message: 'Missing authentication', // ✅ diubah
     });
   }
 
@@ -19,7 +19,7 @@ const authMiddleware = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({
       status: 'fail',
-      message: 'Token tidak valid',
+      message: 'Missing authentication', // ✅ diubah
     });
   }
 };
