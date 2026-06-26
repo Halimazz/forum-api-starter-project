@@ -66,7 +66,7 @@ describe('authMiddleware', () => {
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({
       status: 'fail',
-      message: 'Token tidak valid',
+      message: 'Missing authentication',
     });
     expect(next).not.toHaveBeenCalled();
   });

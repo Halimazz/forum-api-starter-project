@@ -1,5 +1,6 @@
 import express from 'express';
-import authMiddleware from '../../../../Commons/middleware/authMiddleware.js';
+import authMiddleware from '../../middleware/authMiddleware.js';
+
 
 const createThreadsRouter = (handler) => {
   const router = express.Router();
