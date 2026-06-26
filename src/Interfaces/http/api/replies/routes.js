@@ -1,7 +1,8 @@
 import express from 'express';
-import authMiddleware from '../../middleware/authMiddleware.js';
+import jwt from 'jsonwebtoken';
+import createAuthMiddleware from '../../middleware/authMiddleware.js';
 
-
+const authMiddleware = createAuthMiddleware(jwt);
 const createRepliesRouter = (handler) => {
   const router = express.Router();
 

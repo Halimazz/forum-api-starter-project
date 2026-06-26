@@ -1,23 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import jwt from 'jsonwebtoken';
-import authMiddleware from '../authMiddleware';
-
-vi.mock('jsonwebtoken');
+import createAuthMiddleware from '../authMiddleware.js';
 
 describe('authMiddleware', () => {
   let req;
   let res;
   let next;
+  let mockJwt;
+  let authMiddleware;
 
   beforeEach(() => {
-    req = {
-      headers: {},
-    };
+    req = { headers: {} };
     res = {
       status: vi.fn().mockReturnThis(),
       json: vi.fn().mockReturnThis(),
     };
     next = vi.fn();
+    mockJwt = {
+      verify: vi.fn(),
+    };
+    authMiddleware = createAuthMiddleware(mockJwt);
   });
 
   it('should return 401 when authorization header is missing', () => {
@@ -55,7 +56,7 @@ describe('authMiddleware', () => {
   it('should return 401 when token is invalid', () => {
     // Arrange
     req.headers.authorization = 'Bearer invalidtoken';
-    jwt.verify.mockImplementation(() => {
+    mockJwt.verify.mockImplementation(() => {
       throw new Error('invalid token');
     });
 
@@ -75,7 +76,7 @@ describe('authMiddleware', () => {
     // Arrange
     const decoded = { id: 'user-123', username: 'dicoding' };
     req.headers.authorization = 'Bearer validtoken';
-    jwt.verify.mockReturnValue(decoded);
+    mockJwt.verify.mockReturnValue(decoded);
 
     // Action
     authMiddleware(req, res, next);
